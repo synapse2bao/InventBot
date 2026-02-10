@@ -1,0 +1,9 @@
+# Netlify 部署配置
+[build]
+  publish = "static"
+  command = "echo 'No build needed'"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
