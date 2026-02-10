@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        .test-section {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #5568d3;
+        }
+        pre {
+            background: #f5f5f5;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .success {
+            color: green;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>API测试页面</h1>
+    <p>这个页面用于测试后端API是否正确返回模型列表</p>
+    
+    <div class="test-section">
+        <h2>测试模型列表API</h2>
+        <button onclick="testModels()">测试 /api/models</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function testModels() {
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = '<p>正在测试...</p>';
+            
+            try {
+                const response = await fetch('/api/models');
+                const data = await response.json();
+                
+                let html = '<h3 class="success">✓ API请求成功</h3>';
+                html += '<p><strong>状态码:</strong> ' + response.status + '</p>';
+                html += '<p><strong>模型数量:</strong> ' + (data.models?.length || 0) + '</p>';
+                
+                if (data.models && data.models.length > 0) {
+                    html += '<h4>模型列表:</h4><ul>';
+                    data.models.forEach(model => {
+                        html += `<li><strong>ID:</strong> ${model.id}, <strong>名称:</strong> ${model.name}, <strong>可用:</strong> ${model.available ? '是' : '否'}</li>`;
+                    });
+                    html += '</ul>';
+                    
+                    // 检查DeepSeek模型
+                    const deepseekModels = data.models.filter(m => m.id.includes('deepseek'));
+                    html += `<h4>DeepSeek模型:</h4><ul>`;
+                    if (deepseekModels.length === 2) {
+                        html += '<li class="success">✓ 检测到2个DeepSeek模型（正确）</li>';
+                    } else if (deepseekModels.length === 1) {
+                        html += '<li class="error">✗ 只检测到1个DeepSeek模型（需要重启后端服务）</li>';
+                    } else {
+                        html += '<li class="error">✗ 未检测到DeepSeek模型</li>';
+                    }
+                    deepseekModels.forEach(model => {
+                        html += `<li>ID: ${model.id}, 名称: ${model.name}</li>`;
+                    });
+                    html += '</ul>';
+                } else {
+                    html += '<p class="error">✗ 没有返回任何模型</p>';
+                }
+                
+                html += '<h4>原始JSON数据:</h4>';
+                html += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                
+                resultDiv.innerHTML = html;
+            } catch (error) {
+                resultDiv.innerHTML = '<h3 class="error">✗ API请求失败</h3><p>' + error.message + '</p>';
+            }
+        }
+        
+        // 页面加载时自动测试
+        window.addEventListener('load', () => {
+            setTimeout(testModels, 500);
+        });
+    </script>
+</body>
+</html>

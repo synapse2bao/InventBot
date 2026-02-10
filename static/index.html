@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventBot</title>
+    <link rel="icon" type="image/png" href="/static/triz.png">
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="/static/config.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><img src="/static/triz.png" alt="TRIZ" style="width: 32px; height: 32px; vertical-align: middle; margin-right: 8px;"> InventBot</h1>
+            <div class="model-selector">
+                <label for="model-select">选择模型：</label>
+                <select id="model-select">
+                    <option value="">加载中...</option>
+                </select>
+                <button id="clear-btn" class="clear-btn">清空对话</button>
+            </div>
+        </header>
+
+        <div class="chat-container">
+            <div class="ai-disclaimer">
+                <span>内容由AI生成，仅供参考</span>
+            </div>
+            <div id="chat-messages" class="chat-messages">
+                <div class="welcome-message">
+                    <p><img src="/static/triz.png" alt="TRIZ" style="width: 24px; height: 24px; vertical-align: middle; margin-right: 8px;"> 欢迎使用InventBot！</p>
+                    <p>请在上方选择一个模型开始对话。</p>
+                    <div style="margin-top: 20px; padding: 15px; background: #f0f0f0; border-radius: 8px; text-align: left;">
+                        <p style="font-weight: bold; margin-bottom: 10px;">💡 使用示例：</p>
+                        <p style="margin: 8px 0;"><strong>矛盾问题示例：</strong>我想把手表全部包裹起来，以实现游泳时可以防水；但是我不能，因为这样会导致无法听到手表扬声器的声音</p>
+                        <p style="margin: 8px 0;"><strong>科学效应问题示例：</strong>电热水壶的水温达到100摄氏度时切断电源</p>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input-container">
+                <textarea 
+                    id="message-input" 
+                    placeholder="输入你的消息..." 
+                    rows="1"
+                ></textarea>
+                <button id="send-btn" class="send-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
