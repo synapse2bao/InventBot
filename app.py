@@ -2036,13 +2036,6 @@ def clear_history():
     
     return jsonify({'success': True})
 
-# 在应用启动时初始化数据库
-try:
-    from database import init_database
-    init_database()
-except Exception as e:
-    print(f"警告: 数据库初始化失败 ({e})")
-
 if __name__ == '__main__':
     # 使用 threaded=True 和更好的配置，避免阻塞
     app.run(

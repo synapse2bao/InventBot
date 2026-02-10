@@ -22,9 +22,22 @@ def update_env():
         if not api_key:
             return jsonify({'success': False, 'error': 'API KEY 不能为空'}), 400
         
-        # 获取项目根目录（脚本所在目录）
+        # 获取 setup_deepseek_key.html 所在目录
         script_dir = os.path.dirname(os.path.abspath(__file__))
-        env_path = os.path.join(script_dir, '.env')
+        setup_html_path = os.path.join(script_dir, 'setup_deepseek_key.html')
+        
+        if os.path.exists(setup_html_path):
+            # 如果找到 setup_deepseek_key.html，使用其所在目录
+            env_path = os.path.join(script_dir, '.env')
+        else:
+            # 如果找不到，尝试在父目录查找
+            parent_dir = os.path.dirname(script_dir)
+            setup_html_path = os.path.join(parent_dir, 'setup_deepseek_key.html')
+            if os.path.exists(setup_html_path):
+                env_path = os.path.join(parent_dir, '.env')
+            else:
+                # 如果都找不到，使用脚本所在目录
+                env_path = os.path.join(script_dir, '.env')
         
         # 更新 .env 文件
         success, message = update_env_file(api_key, env_path)

@@ -15,7 +15,7 @@ def update_env_file(api_key, env_path=None):
     
     Args:
         api_key: DeepSeek API KEY
-        env_path: .env 文件路径，如果为 None，则在当前目录查找
+        env_path: .env 文件路径，如果为 None，则在 setup_deepseek_key.html 所在目录查找
     
     Returns:
         tuple: (success: bool, message: str)
@@ -33,9 +33,23 @@ def update_env_file(api_key, env_path=None):
     
     # 确定 .env 文件路径
     if env_path is None:
-        # 获取脚本所在目录
+        # 获取 setup_deepseek_key.html 所在目录
+        # 先尝试在当前脚本所在目录查找
         script_dir = Path(__file__).parent.absolute()
-        env_path = script_dir / '.env'
+        setup_html_path = script_dir / 'setup_deepseek_key.html'
+        
+        if setup_html_path.exists():
+            # 如果找到 setup_deepseek_key.html，使用其所在目录
+            env_path = script_dir / '.env'
+        else:
+            # 如果找不到，尝试在父目录查找
+            parent_dir = script_dir.parent
+            setup_html_path = parent_dir / 'setup_deepseek_key.html'
+            if setup_html_path.exists():
+                env_path = parent_dir / '.env'
+            else:
+                # 如果都找不到，使用脚本所在目录
+                env_path = script_dir / '.env'
     else:
         env_path = Path(env_path)
     
