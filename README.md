@@ -212,6 +212,7 @@ inventbot/
 
 - TRIZ理论：感谢Genrich Altshuller及其团队
 - DeepSeek：提供强大的AI模型支持
+- Science Effects: Oxford Creativity提供了科学效应库
 
 ---
 
